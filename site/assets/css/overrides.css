@@ -671,10 +671,10 @@ img {
  * Diletakkan PALING AKHIR agar menang atas aturan mobile lain.
  * ============================================================ */
 /* ---------- I. Marquee "Join over 2.5 million": gerak kanan → kiri ----------
- * Dua `.marquee_row.cc-accolades` di dalam `.marquee.cc-accolades` isinya
- * identik (duplikat untuk sambungan mulus). Jadi cukup geser container
- * 0 → -50%: saat -50% tercapai, baris pertama tepat berada di posisi
- * semula -> loop tanpa lompatan. Arah Slide = -X (ke kiri). */
+ * Dua `.marquee_row.cc-accolades` di dalam `.marquee_track` isinya
+ * identik (duplikat). `.marquee.cc-accolades` menjadi wadah klip statis,
+ * sedangkan `.marquee_track` yang bergeser dari 0 → -50%. Karena track
+ * berisi 2 baris penuh, -50% tepat satu siklus -> loop tanpa putus/lompatan. */
 @keyframes bevel-marquee-rtl {
   from {
     transform: translate3d(0, 0, 0);
@@ -687,17 +687,21 @@ img {
 .marquee.cc-accolades {
   overflow: clip;
   max-width: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.marquee.cc-accolades .marquee_track {
+  display: flex;
+  flex: none;
+  width: max-content;
+  animation: bevel-marquee-rtl 42s linear infinite;
   will-change: transform;
 }
 
 .marquee.cc-accolades .marquee_row.cc-accolades {
   flex: none;
-  /* dua baris identik -> 50% = tepat satu siklus */
   width: max-content;
-}
-
-.marquee.cc-accolades {
-  animation: bevel-marquee-rtl 42s linear infinite;
 }
 
 .marquee.cc-accolades img {
@@ -707,7 +711,7 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee.cc-accolades {
+  .marquee.cc-accolades .marquee_track {
     animation: none;
   }
 }
@@ -720,7 +724,7 @@ img {
 
   /* 2. Foto "Join over 2.5 million": tetap jalan sendiri (kanan → kiri),
      sedikit lebih cepat di mobile supaya tetap terasa hidup. */
-  .marquee.cc-accolades {
+  .marquee.cc-accolades .marquee_track {
     animation-duration: 32s;
   }
 
