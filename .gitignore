@@ -1,0 +1,11 @@
+# Vercel CLI
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+node_modules/
+__pycache__/

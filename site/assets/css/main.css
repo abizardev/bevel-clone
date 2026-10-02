@@ -1,0 +1,30 @@
+/* Bevel — main.css (additive only, tidak merusak layout Webflow) */
+/* `light only`: larang browser/extension menggelapkan halaman (auto-dark).
+   DESIGN.md = tema terang (Paper White). */
+:root { color-scheme: light only; }
+
+body {
+  background: var(--surface-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utilitas sesuai DESIGN.md — dipakai bila butuh, tidak dipaksa ke semua section */
+.bevel-section-gap { padding-top: var(--section-gap); padding-bottom: var(--section-gap); }
+.bevel-feature-card {
+  background: var(--surface-cloud);
+  border-radius: var(--radius-3xl);
+  padding: var(--card-padding);
+}
+.bevel-btn-download {
+  background: var(--color-charcoal);
+  color: var(--color-cloud-card);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+}
+
+/* Gambar responsif aman */
+img, video { max-width: 100%; }
+
+/* Catatan: penyelamat tampil + fix gradien hero pindah ke
+   assets/css/overrides.css (sumber: src/styles/overrides.css). */

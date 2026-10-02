@@ -1,0 +1,50 @@
+:root {
+  /* === Bevel — Design Tokens (dari DESIGN.md) === */
+  --color-paper-white: #ffffff;
+  --color-charcoal: #1f2025;
+  --color-ink: #222326;
+  --color-cloud-card: #ebf0f8;
+  --color-body-gray: #747679;
+  --color-signal-gold: #ffca00;
+  --color-coral-signal: #ffab94;
+  --color-recovery-green: #31ce01;
+  --color-metric-blue: #415eee;
+  --color-sleep-lilac: #b9a6ff;
+  --color-hero-sky: #d2e5ff;
+  --gradient-hero-sky: linear-gradient(#d2e5ff, #fff9ee);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", sans-serif, ui-sans-serif, system-ui;
+  --text-caption: 12px;
+  --text-nav: 16px;
+  --text-brand-nav: 18px;
+  --text-body: 24px;
+  --text-section-label: 24px;
+  --text-card-heading: 40px;
+  --text-display: 64px;
+  --text-hero-display: 80px;
+
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-160: 160px;
+  --section-gap: 80px;
+  --card-padding: 32px;
+
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-nav: 32px;
+  --radius-pill: 128px;
+  --radius-full: 9999px;
+
+  --shadow-md: rgba(0, 0, 0, 0.25) 0px 0px 16px -8px;
+  --shadow-card: rgba(0, 0, 0, 0.15) 0px 2px 16px 0px;
+
+  --surface-paper: var(--color-paper-white);
+  --surface-cloud: var(--color-cloud-card);
+  --surface-dark: var(--color-charcoal);
+}

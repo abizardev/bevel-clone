@@ -1,0 +1,198 @@
+/* ============================================================
+ * Bevel — Hero section styles (ekstrak Webflow, terstruktur)
+ * Digenerate ulang tiap `npm run css` — JANGAN edit manual.
+ * Perubahan permanen: src/styles/overrides.css (HERO-MOCKUP.md)
+ * Mockup: .hero_phone(40) .hero_phone-ui(41) .hero_watch(47)
+ * ============================================================ */
+
+/* ---------- kerangka hero ---------- */
+.hero_section.section-3 {
+  flex-flow: row;
+  justify-content: center;
+  align-items: stretch;
+  min-height: 100svh;
+  padding-top: .5rem;
+  padding-bottom: 0;
+  display: flex;
+  overflow: clip;
+}
+
+.hero_container.container {
+  border-radius: 1.5rem;
+  width: calc(100% - 1rem);
+  max-width: none;
+  padding-top: 6rem;
+  overflow: hidden;
+}
+
+/* ---------- layar jam ---------- */
+
+.hero_watch-ui {
+  transform-origin: 50%;
+  clip-path: url(#squircleClip);
+  width: 65%;
+  transform-style: preserve-3d;
+  font-size: 16px;
+  display: flex;
+  position: absolute;
+  overflow: clip;
+  transform: perspective(1440px);
+}
+
+.hero_phone {
+  z-index: 1;
+  flex: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  position: relative;
+  transform: translateY(.5em);
+}
+
+.hero_watch {
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  display: flex;
+  position: absolute;
+  top: 28%;
+  right: -28%;
+}
+
+.hero_phone-container {
+  justify-content: center;
+  align-items: flex-start;
+  width: 26%;
+  max-width: 25rem;
+  height: 100%;
+  display: flex;
+  position: relative;
+  transform: translate(-14%);
+}
+
+/* ---------- panggung bawah hero ---------- */
+.hero_bottom {
+  z-index: 1;
+  user-select: none;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 1rem;
+  display: flex;
+  position: relative;
+}
+
+.hero_bottom-bg {
+  z-index: 1;
+  pointer-events: none;
+  justify-content: space-between;
+  align-items: stretch;
+  display: flex;
+  position: absolute;
+  inset: 0%;
+  transform: translateY(-15%);
+}
+
+.hero_bottom-clip {
+  flex: none;
+  width: 45%;
+  height: 100%;
+  position: relative;
+  overflow: clip;
+}
+
+/* ---------- terowongan video latar ---------- */
+.hero_tunnel-container {
+  z-index: 1;
+  border-radius: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  left: 0%;
+  right: 0%;
+}
+
+.hero_tunnel {
+  aspect-ratio: 1920/1080;
+  width: 100%;
+  height: auto;
+  mask-image: linear-gradient(#0000 0%, #000 10% 90%, #0000 100%);
+}
+
+/* ---------- video layar phone ---------- */
+.hero_phone-video {
+  aspect-ratio: 392/852;
+  flex: none;
+  width: 100%;
+  height: auto;
+}
+.hero_phone-video.cc-1 { display: block; }
+.hero_phone-video.cc-2,
+.hero_phone-video.cc-3 { display: none; }
+
+.hero_phone-section {
+  z-index: 2;
+  aspect-ratio: 1440/613;
+  pointer-events: none;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 90rem;
+  display: flex;
+  position: relative;
+}
+
+.hero_watch-video { flex: none; width: 100%; height: 100%; }
+.hero_watch-video.cc-1 { display: block; }
+.hero_watch-video.cc-2,
+.hero_watch-video.cc-3 { display: none; }
+
+/* ---------- layar phone: tempel 3D ke bodi ---------- */
+/* (jangan ubah transform tanpa cek visual hero) */
+.hero_phone-video.cc-4 {
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-columns: 1fr;
+  display: none;
+}
+
+.hero_watch-video.cc-3,
+.hero_watch-video.cc-4 { display: none; }
+
+/* ---------- layar phone ---------- */
+.hero_phone-ui {
+  width: 73.5%;
+  box-shadow: none;
+  transform-style: preserve-3d;
+  border-radius: 1.8em 1.8em 0 0;
+  display: flex;
+  position: absolute;
+  overflow: hidden;
+  transform: perspective(2000px) rotateX(-1deg) rotateY(-10deg) rotate(7deg) perspective(1440px) translate(-5%, -8.75%);
+}
+
+/* ---------- responsif (disalin dari Webflow) ---------- */
+@media (max-width: 991px) {
+  .hero_phone-container { width: 36%; }
+  .hero_phone-section { aspect-ratio: 1440/821; }
+}
+@media (max-width: 767px) {
+  .hero_phone-container { width: 60%; }
+  .hero_watch { top: 35%; }
+  .hero_bottom { aspect-ratio: 1440/590; }
+}
+@media (max-width: 479px) {
+  .hero_phone-container { width: 70%; transform: none; }
+  .hero_phone-section { aspect-ratio: 1440/1671; justify-content: flex-start; align-items: flex-start; }
+  .hero_watch { right: -38%; }
+  .hero_bottom-bg { display: none; }
+  .hero_bg { display: none; }
+  .hero_bg-mobile { display: block; }
+  .hero_tunnel { transform: translateY(-10%) scale(2); }
+}

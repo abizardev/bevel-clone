@@ -1,0 +1,10 @@
+{
+  "name": "bevel2",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "css": "python3 tools/build.py css",
+    "hero": "python3 tools/build.py hero",
+    "build": "python3 tools/build.py"
+  }
+}

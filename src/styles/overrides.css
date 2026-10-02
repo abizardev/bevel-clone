@@ -1,0 +1,773 @@
+/* ============================================================
+ * Bevel — Overrides hero (PERMANEN, tidak tertimpa `npm run css`)
+ * Latar gradien biru hero (.hero_bg-2) + jarak judul + penyelamat tampil.
+ * Peta elemen: HERO-MOCKUP.md
+ * Cara cepat (sesuai dokumen):
+ *   posisi gradien  -> --hero-bg-top  (== .hero_bg-2 -> top)
+ *   jarak judul      -> --hero-bg-top
+ *   posisi jam       -> .hero_watch -> top / right
+ *   ukuran jam       -> .hero_watch -> width
+ *   geser phone      -> .hero_phone-container -> transform
+ * ============================================================ */
+
+:root {
+  --hero-bg-top: .5rem; /* bawaan Webflow: gradien full dari atas hero (gutter 0.5rem) */
+}
+
+/* Latar gradien: bidang tinggi di belakang headline + mockup (DESIGN.md:
+   "tall rounded visual field", headline Ink di atasnya).
+   `top` mengatur jarak judul (HERO-MOCKUP.md): makin kecil = makin ke atas. */
+.hero_bg-2 {
+  position: absolute;
+  top: var(--hero-bg-top);
+  left: 0;
+  right: 0;
+  width: calc(100% - 1rem);
+  margin-inline: auto;
+  min-height: calc(100svh - var(--hero-bg-top));
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(#d2e5ff, #fff9ee);
+  border-radius: 1.5rem;
+}
+
+/* Judul hero selalu di atas gradien */
+.hero_section h1.h1 {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 991px) {
+  :root { --hero-bg-top: .5rem; }
+}
+
+@media (max-width: 479px) {
+  :root { --hero-bg-top: .5rem; }
+}
+
+/* Gate Webflow di <head> menyembunyikan phone/jam/floating dengan
+   `html.w-mod-js:not(.w-mod-ix3) ... visibility:hidden !important`,
+   TAPI class w-mod-ix3 tidak pernah ditambahkan JS manapun -> sembunyi permanen.
+   Netralkan di sini (spesifisitas 0,6,1 > gate 0,4,1, tanpa tergantung JS). */
+html.w-mod-js.w-mod-js:not(.w-mod-ix3):not(.w-mod-ix3) :is(
+  .hero_phone,
+  .hero_watch,
+  .intelligence_card .intelligence_floating,
+  .nav_main-wrapper,
+  .nav_main-inner a,
+  .nav_main .btn,
+  .nav_layout-2,
+  .hero_bottom-clip .hero_card-container,
+  .records_animation .records_phone-ui,
+  .qr_fixed .qr_container
+) {
+  visibility: visible !important;
+}
+
+/* Penyelamat tampil (cadangan JS): kalau interaksi Webflow macet di tengah
+   (inline opacity:0 nyangkut), timeout di main.js menambah .bevel-force-show.
+   Spesifisitas 0,5,1 > gate 0,4,1 agar menang. */
+html.bevel-force-show.w-mod-js.w-mod-js:not(.w-mod-ix3) :is(
+  .hero_phone,
+  .hero_watch,
+  .intelligence_card .intelligence_floating,
+  .hero_bottom-clip .hero_card-container,
+  .records_animation .records_phone-ui,
+  .qr_fixed .qr_container,
+  .nav_main-wrapper
+) {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* ============================================================
+ * Bevel — Adapt mobile (impeccable `adapt`: Desktop → Mobile)
+ * Prinsip: bukan scaling, tapi rethinking untuk 320–767px,
+ * touch 44px, single-column, jempol-mudah, tanpa scroll-X.
+ * Semua additive, token DESIGN.md tetap menang.
+ * ============================================================ */
+
+/* ---------- A. Fondasi: no-scroll-X + safe-area ---------- */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+body {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+img {
+  height: auto;
+}
+.hero_phone img.phone-mask-2,
+.hero_watch img.watch-mask,
+.feature_phone img,
+.extra_features-phone img {
+  height: auto;
+}
+.page-wrapper-2,
+.page-main,
+.hero_section,
+.section-2,
+.section-3,
+.works-with {
+  max-width: 100%;
+}
+
+/* ---------- B. Tipografi fluid: display max 6rem, measure aman ---------- */
+.h1,
+.h2,
+.h4,
+.p-md {
+  overflow-wrap: break-word;
+}
+@media screen and (max-width: 991px) {
+  .hero_container.container {
+    padding-top: 5rem;
+  }
+  .section-2 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .h1 {
+    font-size: clamp(2.5rem, 6vw + 1rem, 3rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .h2 {
+    font-size: clamp(1.75rem, 5vw + 0.75rem, 2.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .h2-h3,
+  h3.h2-h3 {
+    font-size: clamp(1.3125rem, 3.5vw + 0.625rem, 1.625rem);
+    line-height: 1.1;
+  }
+  .h4 {
+    line-height: 1.1;
+  }
+  .p-md {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+    max-width: 32rem;
+    margin-inline: auto;
+  }
+  .row.row-center-horizontal > .col[class*="col-sm"] .p-md,
+  .u-vflex-center-top .p-md {
+    margin-inline: auto;
+  }
+  .section-2 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  .u-vgap-80-40 {
+    grid-row-gap: 2.5rem;
+  }
+  .u-vgap-64-40 {
+    grid-row-gap: 2rem;
+  }
+}
+@media screen and (max-width: 479px) {
+  .h1 {
+    font-size: clamp(2.375rem, 6vw + 0.875rem, 2.75rem);
+  }
+  .h2 {
+    font-size: clamp(1.625rem, 5vw + 0.625rem, 2rem);
+  }
+  .p-md {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .section-2 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .feature_card {
+    border-radius: 1.25rem;
+  }
+  .feature_card-top {
+    padding: 1.5rem 1.25rem 0;
+  }
+  .feature_card-content {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* ---------- C. Sentuh 44px + hover hanya untuk mouse ---------- */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 48px;
+    padding: 0.875rem 1.375rem;
+  }
+  .btn.cc-navigation {
+    min-height: 48px;
+    width: 100%;
+    justify-content: center;
+  }
+  .btn.secondary {
+    min-height: 44px;
+  }
+  .navigation_link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav_menu-2 {
+    width: 44px;
+    height: 44px;
+  }
+  .extra_features-item {
+    min-height: 44px;
+  }
+  .footer_link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+@media (hover: none) {
+  .btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .btn:hover .btn-highlight {
+    top: 100%;
+    opacity: 0;
+  }
+  .extra_features-item:not(.is-active):hover {
+    transform: scale(0.925);
+  }
+  .text-link:hover::after {
+    transform: scaleX(0);
+  }
+}
+@media (hover: hover) {
+  .navigation_link:hover {
+    color: #1f2025;
+  }
+}
+
+/* ---------- D. Navigasi mobile: drawer + hamburger X ---------- */
+@media screen and (max-width: 767px) {
+  .navigation {
+    width: calc(100% - 1rem);
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+    padding-bottom: 0.5rem;
+  }
+  .nav_layout-2 {
+    padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+    border-radius: 1rem;
+    background-color: rgb(255 255 255 / 0.92);
+    box-shadow: 0 0.25rem 1rem rgb(0 0 0 / 0.08);
+    align-items: center;
+  }
+  .nav_home {
+    width: auto;
+    flex: none;
+    padding: 0.5rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav_right {
+    flex: none;
+    padding: 0;
+  }
+  .nav_menu-2 {
+    position: relative;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav_menu-2:focus-visible {
+    outline: 2px solid #1f2025;
+    outline-offset: 2px;
+  }
+  .nav_menu-line {
+    left: 50%;
+    translate: -50% 0;
+    transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.25s, width 0.35s;
+  }
+  /* Drawer: grid-rows animation, tanpa height fix */
+  .nav_main-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    width: 100%;
+    height: auto;
+    overflow: clip;
+    transition: grid-template-rows 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .nav_main {
+    overflow: hidden;
+    min-height: 0;
+    width: 100%;
+    padding: 0;
+    gap: 0.5rem;
+  }
+  .bevel-nav-open .nav_main-wrapper {
+    grid-template-rows: 1fr;
+  }
+  .bevel-nav-open .nav_main {
+    padding: 0.75rem 0 0.75rem;
+  }
+  .nav_main-inner {
+    gap: 0.25rem;
+  }
+  .navigation_link {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 1.0625rem;
+  }
+  .navigation_link:hover {
+    background: #ebf0f8;
+  }
+  .nav_main .btn.cc-navigation {
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+  .bevel-nav-open .nav_menu-line.cc-top {
+    transform: translateY(0) rotate(45deg);
+    width: 1.25rem;
+  }
+  .bevel-nav-open .nav_menu-line.cc-middle {
+    opacity: 0;
+  }
+  .bevel-nav-open .nav_menu-line.cc-bottom {
+    transform: translateY(0) rotate(-45deg);
+    width: 1.25rem;
+  }
+  .bevel-nav-open .nav_layout-2 {
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.12);
+  }
+}
+
+/* ---------- E. Hero mobile: single-column, no overflow ---------- */
+.hero_bg-2 {
+  bottom: 0.5rem;
+  min-height: 0;
+  height: auto;
+}
+@media screen and (max-width: 767px) {
+  .hero_section.section-3 {
+    min-height: 0;
+    padding-top: 0.5rem;
+  }
+  .hero_container.container {
+    padding: 4.5rem 1.25rem 1.5rem;
+    border-radius: 1.25rem;
+    overflow: clip;
+  }
+  .hero_bg-2 {
+    width: calc(100% - 1rem);
+    border-radius: 1.25rem;
+  }
+  .hero_tunnel-container {
+    border-radius: 1.25rem;
+    overflow: clip;
+  }
+  .hero_tunnel {
+    transform: none;
+    width: 100%;
+  }
+  .hero_bottom {
+    margin-top: 0.75rem;
+    aspect-ratio: auto;
+  }
+  .hero_phone-section {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding-bottom: 1rem;
+  }
+  .hero_phone-container {
+    width: min(62%, 300px);
+    transform: none;
+    margin-inline: auto;
+  }
+  .hero_phone {
+    transform: none;
+  }
+  .hero_phone-ui {
+    transform: perspective(1200px) rotateX(-1deg) rotateY(-6deg) rotate(4deg) translate(-4%, -6%);
+  }
+  .hero_watch {
+    width: 62%;
+    top: 32%;
+    right: -10%;
+  }
+  .hero_container .btn {
+    width: 100%;
+    max-width: 22rem;
+    min-height: 52px;
+  }
+  .u-hflex-center-center.u-hgap-8 {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 479px) {
+  .hero_container.container {
+    padding-top: 4.25rem;
+  }
+  .hero_phone-container {
+    width: min(78%, 280px);
+  }
+  .hero_phone-section {
+    aspect-ratio: auto;
+    justify-content: center;
+  }
+  .hero_watch {
+    width: 64%;
+    top: 30%;
+    right: -12%;
+  }
+  .hero_phone-ui {
+    transform: perspective(1000px) rotateX(-1deg) rotateY(-5deg) rotate(3deg) translate(-3%, -5%);
+  }
+  .hero_tunnel {
+    transform: none;
+  }
+  .hero_bottom-bg {
+    display: none;
+  }
+  .hero_bottom {
+    aspect-ratio: auto;
+  }
+}
+
+/* ---------- F. Sections: stacking rapi, anti-scroll-X ---------- */
+@media screen and (max-width: 767px) {
+  .works-with.section-3 {
+    min-height: 0;
+    padding-top: 2.5rem;
+  }
+  .works-with_marquee,
+  .marquee.cc-accolades,
+  .marquee.cc-cards {
+    overflow: clip;
+    max-width: 100%;
+  }
+  .marquee_card {
+    width: min(84vw, 24rem);
+    padding: 1.5rem;
+  }
+  .records_animation {
+    overflow: clip;
+  }
+  /* "Connect your health records" (connect.png): teks di atas, lingkaran
+     logo + phone di bawahnya, phone di tengah dan lebih besar. */
+  .records_animation {
+    margin-top: -2rem;
+  }
+  .records_circle-container {
+    width: 128%;
+    left: -14%;
+    bottom: auto;
+    top: 0;
+  }
+  .records_circle.cc-3 {
+    width: 200%;
+    transform: translateY(6%);
+  }
+  .records_circle.cc-2 {
+    width: 160%;
+    transform: translateY(6%);
+  }
+  .records_circle.cc-1 {
+    width: 116%;
+    transform: translateY(4%);
+  }
+  .records_circle.cc-4 {
+    transform: translateY(10%);
+  }
+  .records_circle-icon {
+    width: clamp(2rem, 8vw, 2.75rem);
+    border-radius: .625rem;
+  }
+  .records_phone {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 72%;
+    max-width: none;
+    margin: 6.5rem auto 0;
+  }
+  .records_phone-ui {
+    width: 40%;
+  }
+  .records_phone-ui.cc-1 {
+    top: 8%;
+    right: -12%;
+  }
+  .records_phone-ui.cc-2 {
+    bottom: 34%;
+    left: -10%;
+  }
+  .privacy_container {
+    border-radius: 1.25rem;
+    padding: 2.5rem 1.25rem;
+    height: auto;
+    min-height: 24rem;
+  }
+  .intelligence_card {
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.25rem;
+    height: auto;
+  }
+  .extra_features-item {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+  .extra_features-phone.phone-mask {
+    width: min(78%, 300px);
+    margin-inline: auto;
+  }
+  /* Crafted: Webflow 115–220% bleed → kunci 100% di mobile */
+  .craft_container {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    transform: none;
+    padding-inline: 1rem;
+    /* strip foto = scroll container native, swipe + snap */
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .craft_container::-webkit-scrollbar {
+    display: none;
+  }
+  .craft_container .u-hflex-center-stretch {
+    flex-direction: row;
+    align-items: center;
+    column-gap: 0.75rem;
+    row-gap: 0;
+    /* strip foto mendatar, bisa digeser + snap (mobile) */
+    width: max-content;
+    margin-inline: auto;
+    padding-inline: 0.25rem;
+  }
+  /* Semua kolom sama lebar (seperti crafted.png: 4 kolom rata lebar),
+     tinggi foto dibedakan per cc-* lalu di-offset vertikal. */
+  .craft_container [craft-col] {
+    width: 8.5rem;
+    flex: none;
+    scroll-snap-align: center;
+    align-self: flex-start;
+  }
+  .crafted_frame.cc-large {
+    height: 13.5rem;
+  }
+  .crafted_frame.cc-medium {
+    height: 10rem;
+  }
+  .crafted_frame.cc-small {
+    height: 4.5rem;
+  }
+  /* Offset staggered kolom foto (mirip crafted.png):
+     kolom ganjil turun, kolom genap naik. */
+  .craft_container [craft-col]:nth-child(odd) {
+    margin-top: 3.5rem;
+  }
+  .craft_container [craft-col]:nth-child(even) {
+    margin-top: 0;
+  }
+  .footer-2 .row.row-between {
+    row-gap: 2rem;
+  }
+  .footer-2 .col {
+    text-align: center;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 479px) {
+  .craft_container {
+    width: 100%;
+    margin-left: auto;
+  }
+  .craft_container [craft-col] {
+    width: 7.5rem;
+  }
+  .crafted_frame.cc-large {
+    height: 12rem;
+  }
+  .crafted_frame.cc-medium {
+    height: 9rem;
+  }
+  .privacy_container {
+    min-height: 22rem;
+  }
+}
+
+/* ---------- G. Banner + QR: jempol-mudah, safe-area ---------- */
+.banner {
+  padding-bottom: max(0rem, env(safe-area-inset-bottom));
+}
+.banner_inner {
+  max-width: 32rem;
+  margin-inline: auto;
+}
+@media screen and (max-width: 767px) {
+  .banner {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .banner_inner {
+    gap: 0.75rem;
+  }
+  .banner_icon {
+    width: 3rem;
+    height: 3rem;
+  }
+  .qr_fixed {
+    display: none;
+  }
+}
+
+/* ---------- H. Browser surfaces + motion aman ---------- */
+::selection {
+  background: #1f2025;
+  color: #ebf0f8;
+}
+:focus-visible {
+  outline: 2px solid #415eee;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav_main-wrapper,
+  .nav_menu-line,
+  .btn,
+  .extra_features-item {
+    transition: none;
+  }
+  .hero_tunnel {
+    transform: none;
+  }
+}
+
+/* ============================================================
+ * MOBILE FIX BATCH — 6 permintaan (≤767px). Semua di bawah ini
+ * mobile-only; desktop tidak tersentuh. Urutan = nomor permintaan.
+ * Diletakkan PALING AKHIR agar menang atas aturan mobile lain.
+ * ============================================================ */
+/* ---------- I. Marquee "Join over 2.5 million": gerak kanan → kiri ----------
+ * Dua `.marquee_row.cc-accolades` di dalam `.marquee.cc-accolades` isinya
+ * identik (duplikat untuk sambungan mulus). Jadi cukup geser container
+ * 0 → -50%: saat -50% tercapai, baris pertama tepat berada di posisi
+ * semula -> loop tanpa lompatan. Arah Slide = -X (ke kiri). */
+@keyframes bevel-marquee-rtl {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee.cc-accolades {
+  overflow: clip;
+  max-width: 100%;
+  will-change: transform;
+}
+
+.marquee.cc-accolades .marquee_row.cc-accolades {
+  flex: none;
+  /* dua baris identik -> 50% = tepat satu siklus */
+  width: max-content;
+}
+
+.marquee.cc-accolades {
+  animation: bevel-marquee-rtl 42s linear infinite;
+}
+
+.marquee.cc-accolades img {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee.cc-accolades {
+    animation: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* 1. Headline "Your Connected Health Coach" turun agar seimbang */
+  .hero_container.container {
+    padding-top: 5.5rem;
+  }
+
+  /* 2. Foto "Join over 2.5 million": tetap jalan sendiri (kanan → kiri),
+     sedikit lebih cepat di mobile supaya tetap terasa hidup. */
+  .marquee.cc-accolades {
+    animation-duration: 32s;
+  }
+
+  /* 3. Logo partner (works-with) proporsional di mobile */
+  .works-with_marquee-col {
+    height: 1.125rem;
+  }
+
+  /* 4. "Crafted with Care Loved Everywhere": beri napas ke testimoni */
+  .marquee.cc-cards {
+    margin-top: 2.5rem;
+  }
+
+  /* 5. Kartu testimoni bisa digeser kiri-kanan */
+  .marquee.cc-cards {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x pan-y;
+    scrollbar-width: none;
+  }
+  .marquee.cc-cards::-webkit-scrollbar {
+    display: none;
+  }
+  .marquee.cc-cards .marquee_row {
+    width: max-content;
+  }
+  .marquee.cc-cards .marquee_card {
+    width: 17rem;
+    scroll-snap-align: center;
+  }
+  .marquee.cc-cards img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  /* 1. lanjutan: headline sedikit lebih turun di layar kecil */
+  .hero_container.container {
+    padding-top: 5rem;
+  }
+
+  /* 2. Strip "Crafted with Care": kolom dibuat lebih sempit supaya
+     ~3 kolom terlihat di layar kecil. */
+  .craft_container [craft-col] {
+    width: 7.5rem;
+  }
+}
